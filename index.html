@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Читать или пропустить?</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 1rem;
+      font-family: sans-serif;
+      background: #f9f9f9;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      border: none;
+      background: #2a9d8f;
+      color: white;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Читать или пропустить?</h1>
+  <input id="bookInput" type="text" placeholder="Введите название книги...">
+  <button onclick="checkBook()">Проверить</button>
+  <div class="result" id="resultBox" style="display: none;"></div>
+
+  <script>
+    const books = {
+      "атомные привычки": {
+        verdict: "📘 Читать",
+        reason: "Если устал бороться с собой — это твой путеводитель.",
+        alt: "Мини-привычки (Стивен Гайз)",
+        episode: "https://t.me/readorskip/3"
+      },
+      "психология денег": {
+        verdict: "📘 Читать",
+        reason: "Деньги — это поведение, а не интеллект.",
+        alt: "Хулиномика",
+        episode: "https://t.me/readorskip/2"
+      },
+      "магия утра": {
+        verdict: "❌ Пропустить",
+        reason: "Много воды. Идею можно уместить в абзац.",
+        alt: "Атомные привычки",
+        episode: null
+      }
+    };
+
+    function checkBook() {
+      const input = document.getElementById('bookInput').value.trim().toLowerCase();
+      const resultBox = document.getElementById('resultBox');
+      if (books[input]) {
+        const b = books[input];
+        resultBox.innerHTML = `
+          <h2>${b.verdict}</h2>
+          <p><strong>Почему:</strong> ${b.reason}</p>
+          <p><strong>Альтернатива:</strong> ${b.alt}</p>
+          ${b.episode ? `<p><a href="${b.episode}" target="_blank">🎧 Слушать выпуск</a></p>` : ''}
+        `;
+      } else {
+        resultBox.innerHTML = `
+          <p>Этой книги пока нет в базе. Но вот что стоит прочитать:</p>
+          <ul>
+            <li>Атомные привычки</li>
+            <li>Психология денег</li>
+            <li>Хулиномика</li>
+          </ul>
+        `;
+      }
+      resultBox.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
