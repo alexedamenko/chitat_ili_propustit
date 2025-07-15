@@ -116,6 +116,14 @@
 
   <div id="tagResults"></div>
   <div class="result" id="resultBox" style="display: none;"></div>
+  <div id="suggestForm" style="display:none; margin-top:1rem; background:#fff; padding:1rem; border-radius:0.5rem; box-shadow:0 0 5px rgba(0,0,0,0.1);">
+    <h3>📩 Предложить книгу</h3>
+    <input id="suggTitle" type="text" placeholder="Название книги" style="width:100%; margin-bottom:0.5rem;" />
+    <input id="suggAuthor" type="text" placeholder="Автор (необязательно)" style="width:100%; margin-bottom:0.5rem;" />
+    <textarea id="suggComment" placeholder="Комментарий (необязательно)" rows="3" style="width:100%; margin-bottom:0.5rem;"></textarea>
+    <button onclick="submitSuggestion()">Отправить</button>
+  </div>
+
 
   <script>
     const books = {
@@ -262,15 +270,31 @@
     }
 
     
-    function suggestBook(name) {
-      alert("Отправляю книгу: " + name);
+    function toggleSuggestForm() {
+      const form = document.getElementById('suggestForm');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function submitSuggestion() {
+      const title = document.getElementById('suggTitle').value.trim();
+      if (!title) {
+        alert("Пожалуйста, введите название книги");
+        return;
+      }
+      const author = document.getElementById('suggAuthor').value.trim();
+      const comment = document.getElementById('suggComment').value.trim();
+      const payload = JSON.stringify({
+        title,
+        author,
+        comment
+      });
+
       if (window.Telegram && Telegram.WebApp) {
-        Telegram.WebApp.sendData(name);
+        Telegram.WebApp.sendData(payload);
       } else {
         alert("Telegram WebApp API недоступен.");
       }
     }
-
 function chooseTag(tag) {
       const container = document.getElementById('tagResults');
       container.innerHTML = '';
@@ -287,4 +311,12 @@ function chooseTag(tag) {
   </script>
 </body>
 </html>
+    function suggestBook(name) {
+      if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.sendData(name);
+      } else {
+        alert("Telegram WebApp API недоступен.");
+      }
+    }
+
 
