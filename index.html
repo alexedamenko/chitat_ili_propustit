@@ -16,13 +16,37 @@
       font-size: 1.5rem;
       margin-bottom: 1rem;
     }
+    .autocomplete-container {
+      position: relative;
+      width: 100%;
+    }
     input {
       width: 100%;
       padding: 0.75rem;
       font-size: 1rem;
       border: 1px solid #ccc;
       border-radius: 0.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .autocomplete-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-top: none;
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 1000;
+      border-radius: 0 0 0.5rem 0.5rem;
+    }
+    .autocomplete-item {
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+    .autocomplete-item:hover {
+      background-color: #eee;
     }
     button {
       padding: 0.75rem 1.25rem;
@@ -44,7 +68,10 @@
 </head>
 <body>
   <h1>Читать или пропустить?</h1>
-  <input id="bookInput" type="text" placeholder="Введите название книги...">
+  <div class="autocomplete-container">
+    <input id="bookInput" type="text" placeholder="Введите название книги..." oninput="showSuggestions()">
+    <div id="autocompleteList" class="autocomplete-list" style="display:none;"></div>
+  </div>
   <button onclick="checkBook()">Проверить</button>
   <div class="result" id="resultBox" style="display: none;"></div>
 
@@ -67,12 +94,81 @@
         reason: "Много воды. Идею можно уместить в абзац.",
         alt: "Атомные привычки",
         episode: null
+      },
+      "хулиномика": {
+        verdict: "📘 Читать",
+        reason: "Простой и честный взгляд на финансы и инвестиции. Особенно актуально для постсоветского пространства.",
+        alt: "Психология денег",
+        episode: "https://t.me/readorskip/4"
+      },
+      "богатый папа бедный папа": {
+        verdict: "🤔 Можно прочитать",
+        reason: "Полезно для старта, но с оговорками. Много мифов и упрощений.",
+        alt: "Хулиномика",
+        episode: null
+      },
+      "мышление миллионера": {
+        verdict: "❌ Пропустить",
+        reason: "Много воды, повторов и мотивационного шума.",
+        alt: "Психология денег",
+        episode: null
+      },
+      "мини-привычки": {
+        verdict: "📘 Читать",
+        reason: "Отличное дополнение к «Атомным привычкам», если хочешь начать с малого.",
+        alt: "Атомные привычки",
+        episode: null
+      },
+      "самый богатый человек в вавилоне": {
+        verdict: "📘 Читать",
+        reason: "Классика финансовой грамотности в сказочном стиле. Подходит для начала.",
+        alt: "Хулиномика",
+        episode: "https://t.me/readorskip/1"
       }
     };
+
+    const titles = Object.keys(books);
+
+    function showSuggestions() {
+      const input = document.getElementById('bookInput');
+      const list = document.getElementById('autocompleteList');
+      const query = input.value.trim().toLowerCase();
+
+      list.innerHTML = '';
+
+      if (!query) {
+        list.style.display = 'none';
+        return;
+      }
+
+      const matches = titles.filter(title => title.includes(query));
+
+      if (matches.length === 0) {
+        list.style.display = 'none';
+        return;
+      }
+
+      matches.forEach(title => {
+        const item = document.createElement('div');
+        item.classList.add('autocomplete-item');
+        item.textContent = title;
+        item.onclick = () => {
+          input.value = title;
+          list.style.display = 'none';
+          checkBook();
+        };
+        list.appendChild(item);
+      });
+
+      list.style.display = 'block';
+    }
 
     function checkBook() {
       const input = document.getElementById('bookInput').value.trim().toLowerCase();
       const resultBox = document.getElementById('resultBox');
+      const list = document.getElementById('autocompleteList');
+      list.style.display = 'none';
+
       if (books[input]) {
         const b = books[input];
         resultBox.innerHTML = `
