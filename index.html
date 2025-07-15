@@ -263,6 +263,7 @@
 
     
     function suggestBook(name) {
+      alert("Отправляю книгу: " + name);
       if (window.Telegram && Telegram.WebApp) {
         Telegram.WebApp.sendData(name);
       } else {
