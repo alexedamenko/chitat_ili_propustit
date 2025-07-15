@@ -1,20 +1,45 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Читать или пропустить?</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
-      margin: 0;
-      padding: 1rem;
       font-family: sans-serif;
+      padding: 1rem;
       background: #f9f9f9;
     }
     h1 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      border: none;
+      background: #2a9d8f;
+      color: white;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+    .result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .tag-cloud {
       display: flex;
@@ -46,55 +71,6 @@
     .book-option:hover {
       background: #f0f0f0;
     }
-    .autocomplete-container {
-      position: relative;
-      width: 100%;
-    }
-    input {
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 0.5rem;
-      margin-bottom: 0.25rem;
-    }
-    .autocomplete-list {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      border: 1px solid #ccc;
-      border-top: none;
-      max-height: 150px;
-      overflow-y: auto;
-      z-index: 1000;
-      border-radius: 0 0 0.5rem 0.5rem;
-    }
-    .autocomplete-item {
-      padding: 0.5rem;
-      cursor: pointer;
-    }
-    .autocomplete-item:hover {
-      background-color: #eee;
-    }
-    button {
-      padding: 0.75rem 1.25rem;
-      font-size: 1rem;
-      border: none;
-      background: #2a9d8f;
-      color: white;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      margin-right: 0.5rem;
-    }
-    .result {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
   </style>
 </head>
 <body>
@@ -106,97 +82,47 @@
     <span class="tag" onclick="chooseTag('мотивация')">🚀 Мотивация</span>
   </div>
 
-  <div class="autocomplete-container">
-    <input id="bookInput" type="text" placeholder="Введите название книги..." oninput="showSuggestions()">
-    <div id="autocompleteList" class="autocomplete-list" style="display:none;"></div>
-  </div>
-
+  <input id="bookInput" type="text" placeholder="Введите название книги..." oninput="showSuggestions()"/>
+  <div id="autocompleteList" class="autocomplete-list" style="display:none;"></div>
   <button onclick="checkBook()">Проверить</button>
   <button onclick="randomBook()">🎲 Совет дня</button>
+  <button onclick="toggleSuggestForm()">📩 Предложить книгу</button>
 
   <div id="tagResults"></div>
   <div class="result" id="resultBox" style="display: none;"></div>
+
   <div id="suggestForm" style="display:none; margin-top:1rem; background:#fff; padding:1rem; border-radius:0.5rem; box-shadow:0 0 5px rgba(0,0,0,0.1);">
     <h3>📩 Предложить книгу</h3>
-    <input id="suggTitle" type="text" placeholder="Название книги" style="width:100%; margin-bottom:0.5rem;" />
-    <input id="suggAuthor" type="text" placeholder="Автор (необязательно)" style="width:100%; margin-bottom:0.5rem;" />
-    <textarea id="suggComment" placeholder="Комментарий (необязательно)" rows="3" style="width:100%; margin-bottom:0.5rem;"></textarea>
+    <input id="suggTitle" type="text" placeholder="Название книги" />
+    <input id="suggAuthor" type="text" placeholder="Автор (необязательно)" />
+    <textarea id="suggComment" placeholder="Комментарий (необязательно)" rows="3"></textarea>
     <button onclick="submitSuggestion()">Отправить</button>
   </div>
-
 
   <script>
     const books = {
       "атомные привычки": {
-    title: "Атомные привычки",
-    author: "Джеймс Клир",
+        title: "Атомные привычки",
+        author: "Джеймс Клир",
         verdict: "📘 Читать",
         reason: "Если устал бороться с собой — это твой путеводитель.",
         alt: "Мини-привычки (Стивен Гайз)",
         episode: "https://t.me/readorskip/3"
       },
       "психология денег": {
-    title: "Психология денег",
-    author: "Морган Хаузел",
+        title: "Психология денег",
+        author: "Морган Хаузел",
         verdict: "📘 Читать",
         reason: "Деньги — это поведение, а не интеллект.",
         alt: "Хулиномика",
         episode: "https://t.me/readorskip/2"
-      },
-      "магия утра": {
-    title: "Магия утра",
-    author: "Хэл Элрод",
-        verdict: "❌ Пропустить",
-        reason: "Много воды. Идею можно уместить в абзац.",
-        alt: "Атомные привычки",
-        episode: null
-      },
-      "хулиномика": {
-    title: "Хулиномика",
-    author: "Алексей Марков",
-        verdict: "📘 Читать",
-        reason: "Простой и честный взгляд на финансы и инвестиции. Особенно актуально для постсоветского пространства.",
-        alt: "Психология денег",
-        episode: "https://t.me/readorskip/4"
-      },
-      "богатый папа бедный папа": {
-    title: "Богатый папа, бедный папа",
-    author: "Роберт Кийосаки",
-        verdict: "🤔 Можно прочитать",
-        reason: "Полезно для старта, но с оговорками. Много мифов и упрощений.",
-        alt: "Хулиномика",
-        episode: null
-      },
-      "мышление миллионера": {
-    title: "Мышление миллионера",
-    author: "Т. Харв Экер",
-        verdict: "❌ Пропустить",
-        reason: "Много воды, повторов и мотивационного шума.",
-        alt: "Психология денег",
-        episode: null
-      },
-      "мини-привычки": {
-    title: "Мини-привычки",
-    author: "Стивен Гайз",
-        verdict: "📘 Читать",
-        reason: "Отличное дополнение к «Атомным привычкам», если хочешь начать с малого.",
-        alt: "Атомные привычки",
-        episode: null
-      },
-      "самый богатый человек в вавилоне": {
-    title: "Самый богатый человек в Вавилоне",
-    author: "Джордж Клейсон",
-        verdict: "📘 Читать",
-        reason: "Классика финансовой грамотности в сказочном стиле. Подходит для начала.",
-        alt: "Хулиномика",
-        episode: "https://t.me/readorskip/1"
       }
     };
 
     const categories = {
-      "финансы": ["психология денег", "хулиномика", "богатый папа бедный папа", "самый богатый человек в вавилоне"],
-      "привычки": ["атомные привычки", "мини-привычки"],
-      "мотивация": ["магия утра", "мышление миллионера"]
+      "финансы": ["психология денег"],
+      "привычки": ["атомные привычки"],
+      "мотивация": []
     };
 
     const titles = Object.keys(books);
@@ -211,10 +137,6 @@
         return;
       }
       const matches = titles.filter(title => title.includes(query));
-      if (matches.length === 0) {
-        list.style.display = 'none';
-        return;
-      }
       matches.forEach(title => {
         const item = document.createElement('div');
         item.classList.add('autocomplete-item');
@@ -226,7 +148,7 @@
         };
         list.appendChild(item);
       });
-      list.style.display = 'block';
+      list.style.display = matches.length > 0 ? 'block' : 'none';
     }
 
     function checkBook(nameOverride = null) {
@@ -248,17 +170,10 @@
           ${b.episode ? `<p><a href="${b.episode}" target="_blank">🎧 Слушать выпуск</a></p>` : ''}
         `;
       } else {
-        resultBox.innerHTML = `
-          <p>Этой книги пока нет в базе. Но вы можете предложить её:</p>
-          <button onclick="suggestBook(name)">📩 Предложить эту книгу</button>
-<p>Вот что стоит прочитать:</p>
-          <ul>
-            <li>Атомные привычки</li>
-            <li>Психология денег</li>
-            <li>Хулиномика</li>
-          </ul>
-        `;
+        resultBox.innerHTML = `<p>Книга не найдена. Можешь предложить свою 👇</p>`;
+        toggleSuggestForm();
       }
+
       resultBox.style.display = 'block';
     }
 
@@ -269,7 +184,20 @@
       checkBook();
     }
 
-    
+    function chooseTag(tag) {
+      const container = document.getElementById('tagResults');
+      container.innerHTML = '';
+      document.getElementById('resultBox').style.display = 'none';
+      if (!categories[tag]) return;
+      categories[tag].forEach(book => {
+        const btn = document.createElement('div');
+        btn.className = 'book-option';
+        btn.textContent = '📖 ' + book;
+        btn.onclick = () => checkBook(book);
+        container.appendChild(btn);
+      });
+    }
+
     function toggleSuggestForm() {
       const form = document.getElementById('suggestForm');
       form.style.display = form.style.display === 'none' ? 'block' : 'none';
@@ -283,11 +211,7 @@
       }
       const author = document.getElementById('suggAuthor').value.trim();
       const comment = document.getElementById('suggComment').value.trim();
-      const payload = JSON.stringify({
-        title,
-        author,
-        comment
-      });
+      const payload = JSON.stringify({ title, author, comment });
 
       if (window.Telegram && Telegram.WebApp) {
         Telegram.WebApp.sendData(payload);
@@ -295,28 +219,6 @@
         alert("Telegram WebApp API недоступен.");
       }
     }
-function chooseTag(tag) {
-      const container = document.getElementById('tagResults');
-      container.innerHTML = '';
-      document.getElementById('resultBox').style.display = 'none';
-      if (!categories[tag]) return;
-      categories[tag].forEach(book => {
-        const btn = document.createElement('div');
-        btn.className = 'book-option';
-        btn.textContent = '📖 ' + book;
-        btn.onclick = () => checkBook(book);
-        container.appendChild(btn);
-      });
-    }
   </script>
 </body>
 </html>
-    function suggestBook(name) {
-      if (window.Telegram && Telegram.WebApp) {
-        Telegram.WebApp.sendData(name);
-      } else {
-        alert("Telegram WebApp API недоступен.");
-      }
-    }
-
-
