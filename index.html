@@ -5,13 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Читать или пропустить?</title>
   <script src="https://telegram.org/js/telegram-web-app.js">
-    function randomBook() {
-      const keys = Object.keys(books);
-      const randomKey = keys[Math.floor(Math.random() * keys.length)];
-      document.getElementById('bookInput').value = randomKey;
-      checkBook();
-    }
-</script>
+    </script>
   <style>
     body {
       margin: 0;
@@ -171,7 +165,15 @@
       list.style.display = 'block';
     }
 
-    function checkBook() {
+    
+    function randomBook() {
+      const keys = Object.keys(books);
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      document.getElementById('bookInput').value = randomKey;
+      checkBook();
+    }
+
+function checkBook() {
       const input = document.getElementById('bookInput').value.trim().toLowerCase();
       const resultBox = document.getElementById('resultBox');
       const list = document.getElementById('autocompleteList');
