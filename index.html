@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Читать или пропустить?</title>
-  <script src="https://telegram.org/js/telegram-web-app.js">
-    </script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
       margin: 0;
@@ -16,6 +15,36 @@
     h1 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
+    }
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .tag {
+      background: #e0f7f1;
+      color: #2a9d8f;
+      padding: 0.4rem 0.8rem;
+      border-radius: 1rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .tag:hover {
+      background: #b8ece1;
+    }
+    .book-option {
+      display: block;
+      background: #ffffff;
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ddd;
+      cursor: pointer;
+    }
+    .book-option:hover {
+      background: #f0f0f0;
     }
     .autocomplete-container {
       position: relative;
@@ -57,6 +86,7 @@
       color: white;
       border-radius: 0.5rem;
       cursor: pointer;
+      margin-right: 0.5rem;
     }
     .result {
       margin-top: 1rem;
@@ -69,12 +99,22 @@
 </head>
 <body>
   <h1>Читать или пропустить?</h1>
+
+  <div class="tag-cloud">
+    <span class="tag" onclick="chooseTag('финансы')">💰 Финансы</span>
+    <span class="tag" onclick="chooseTag('привычки')">🧠 Привычки</span>
+    <span class="tag" onclick="chooseTag('мотивация')">🚀 Мотивация</span>
+  </div>
+
   <div class="autocomplete-container">
     <input id="bookInput" type="text" placeholder="Введите название книги..." oninput="showSuggestions()">
     <div id="autocompleteList" class="autocomplete-list" style="display:none;"></div>
   </div>
+
   <button onclick="checkBook()">Проверить</button>
   <button onclick="randomBook()">🎲 Совет дня</button>
+
+  <div id="tagResults"></div>
   <div class="result" id="resultBox" style="display: none;"></div>
 
   <script>
@@ -129,27 +169,28 @@
       }
     };
 
+    const categories = {
+      "финансы": ["психология денег", "хулиномика", "богатый папа бедный папа", "самый богатый человек в вавилоне"],
+      "привычки": ["атомные привычки", "мини-привычки"],
+      "мотивация": ["магия утра", "мышление миллионера"]
+    };
+
     const titles = Object.keys(books);
 
     function showSuggestions() {
       const input = document.getElementById('bookInput');
       const list = document.getElementById('autocompleteList');
       const query = input.value.trim().toLowerCase();
-
       list.innerHTML = '';
-
       if (!query) {
         list.style.display = 'none';
         return;
       }
-
       const matches = titles.filter(title => title.includes(query));
-
       if (matches.length === 0) {
         list.style.display = 'none';
         return;
       }
-
       matches.forEach(title => {
         const item = document.createElement('div');
         item.classList.add('autocomplete-item');
@@ -161,26 +202,19 @@
         };
         list.appendChild(item);
       });
-
       list.style.display = 'block';
     }
 
-    
-    function randomBook() {
-      const keys = Object.keys(books);
-      const randomKey = keys[Math.floor(Math.random() * keys.length)];
-      document.getElementById('bookInput').value = randomKey;
-      checkBook();
-    }
-
-function checkBook() {
-      const input = document.getElementById('bookInput').value.trim().toLowerCase();
+    function checkBook(nameOverride = null) {
+      const input = document.getElementById('bookInput');
+      const name = nameOverride || input.value.trim().toLowerCase();
       const resultBox = document.getElementById('resultBox');
       const list = document.getElementById('autocompleteList');
+      document.getElementById('tagResults').innerHTML = '';
       list.style.display = 'none';
 
-      if (books[input]) {
-        const b = books[input];
+      if (books[name]) {
+        const b = books[name];
         resultBox.innerHTML = `
           <h2>${b.verdict}</h2>
           <p><strong>Почему:</strong> ${b.reason}</p>
@@ -198,6 +232,27 @@ function checkBook() {
         `;
       }
       resultBox.style.display = 'block';
+    }
+
+    function randomBook() {
+      const keys = Object.keys(books);
+      const randomKey = keys[Math.floor(Math.random() * keys.length)];
+      document.getElementById('bookInput').value = randomKey;
+      checkBook();
+    }
+
+    function chooseTag(tag) {
+      const container = document.getElementById('tagResults');
+      container.innerHTML = '';
+      document.getElementById('resultBox').style.display = 'none';
+      if (!categories[tag]) return;
+      categories[tag].forEach(book => {
+        const btn = document.createElement('div');
+        btn.className = 'book-option';
+        btn.textContent = '📖 ' + book;
+        btn.onclick = () => checkBook(book);
+        container.appendChild(btn);
+      });
     }
   </script>
 </body>
