@@ -261,7 +261,16 @@
       checkBook();
     }
 
-    function chooseTag(tag) {
+    
+    function suggestBook(name) {
+      if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.sendData(name);
+      } else {
+        alert("Telegram WebApp API недоступен.");
+      }
+    }
+
+function chooseTag(tag) {
       const container = document.getElementById('tagResults');
       container.innerHTML = '';
       document.getElementById('resultBox').style.display = 'none';
@@ -277,12 +286,4 @@
   </script>
 </body>
 </html>
-    function suggestBook(name) {
-      if (window.Telegram && Telegram.WebApp) {
-        Telegram.WebApp.sendData(name);
-      } else {
-        alert("Telegram WebApp API недоступен.");
-      }
-    }
-
 
