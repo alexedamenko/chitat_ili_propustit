@@ -223,12 +223,12 @@
       const comment = document.getElementById('suggComment').value.trim();
       const payload = JSON.stringify({ title, author, comment });
 
-      if (window.Telegram && Telegram.WebApp) {
-        Telegram.WebApp.sendData(payload);
-      alert("📨 Данные отправлены!");
-      } else {
-        alert("Telegram WebApp API недоступен.");
-      }
+      if (window.Telegram?.WebApp?.sendData) {
+  Telegram.WebApp.sendData(payload);
+  alert("📨 Данные отправлены!");
+} else {
+  alert("❌ Telegram WebApp API недоступен.");
+}
     }
   </script>
 </body>
