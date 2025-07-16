@@ -71,6 +71,25 @@
     .book-option:hover {
       background: #f0f0f0;
     }
+  .autocomplete-list {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 0.3rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+}
+.autocomplete-item {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+.autocomplete-item:hover {
+  background: #f0f0f0;
+}
   </style>
 </head>
 <body>
@@ -218,9 +237,6 @@
       if (!title) {
         alert("Пожалуйста, введите название книги");
         return;
-        document.getElementById('suggTitle').value = '';
-        document.getElementById('suggAuthor').value = '';
-        document.getElementById('suggComment').value = '';
       }
       const author = document.getElementById('suggAuthor').value.trim();
       const comment = document.getElementById('suggComment').value.trim();
@@ -228,7 +244,13 @@
 
       if (window.Telegram?.WebApp?.sendData) {
   Telegram.WebApp.sendData(payload);
-  alert("📨 Данные ОТправлены!");
+  alert("📨 Данные отправлены!");
+         // Сброс формы
+  document.getElementById('suggTitle').value = '';
+  document.getElementById('suggAuthor').value = '';
+  document.getElementById('suggComment').value = '';
+  // Можно закрыть WebApp (по желанию)
+  // Telegram.WebApp.close();
 } else {
   alert("❌ Telegram WebApp API НЕДОСТУтупен.");
 }
