@@ -218,6 +218,9 @@
       if (!title) {
         alert("Пожалуйста, введите название книги");
         return;
+        document.getElementById('suggTitle').value = '';
+        document.getElementById('suggAuthor').value = '';
+        document.getElementById('suggComment').value = '';
       }
       const author = document.getElementById('suggAuthor').value.trim();
       const comment = document.getElementById('suggComment').value.trim();
