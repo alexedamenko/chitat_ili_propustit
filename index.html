@@ -1,38 +1,127 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Читать или пропустить?</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f8f8f8; }
+    h1 { font-size: 24px; }
+    .tags { margin-bottom: 10px; }
+    .tag {
+      display: inline-block;
+      margin: 5px 5px 0 0;
+      padding: 8px 12px;
+      background: #dff5f1;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+    input, textarea, button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      box-sizing: border-box;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #009688;
+      color: white;
+      border: none;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    .recommendations {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Читать или пропустить?</h1>
+
+  <div class="tags">
+    <span class="tag">💰 Финансы</span>
+    <span class="tag">🧠 Привычки</span>
+    <span class="tag">🚀 Мотивация</span>
+  </div>
+
+  <input id="searchInput" placeholder="Введите название книги..." />
+  <div style="display: flex; gap: 10px;">
+    <button onclick="checkBook()">Проверить</button>
+    <button onclick="suggestRandom()">🎲 Совет дня</button>
+  </div>
+
+  <div id="resultBox" class="recommendations"></div>
+
+  <div class="recommendations" style="margin-top: 20px;">
+    <h3>Предложить свою книгу:</h3>
+    <input id="bookTitle" placeholder="Название книги" />
+    <input id="bookAuthor" placeholder="Автор (необязательно)" />
+    <textarea id="bookComment" placeholder="Комментарий (необязательно)"></textarea>
+    <button onclick="submitBook()">Отправить</button>
+  </div>
+
   <script>
-    function sendData() {
-      const title = document.getElementById("title").value;
-      const author = document.getElementById("author").value;
-      const comment = document.getElementById("comment").value;
+    const books = [
+      { title: "Атомные привычки", tags: ["Привычки"] },
+      { title: "Психология денег", tags: ["Финансы"] },
+      { title: "Хулиномика", tags: ["Финансы"] }
+    ];
+
+    const recommendations = [
+      "Атомные привычки",
+      "Психология денег",
+      "Хулиномика"
+    ];
+
+    function checkBook() {
+      const input = document.getElementById("searchInput").value.trim().toLowerCase();
+      const resultBox = document.getElementById("resultBox");
+      const found = books.find(book => book.title.toLowerCase().includes(input));
+      if (found) {
+        resultBox.innerHTML = `<b>📖 Найдено:</b><br><b>${found.title}</b><br><i>Категории:</i> ${found.tags.join(", ")}`;
+      } else {
+        resultBox.innerHTML = `
+          🚫 Этой книги пока нет в базе. Но вы можете предложить её:
+          <br><br><b>Вот что стоит прочитать:</b>
+          <ul>${recommendations.map(r => `<li>${r}</li>`).join("")}</ul>
+        `;
+      }
+    }
+
+    function suggestRandom() {
+      const rec = recommendations[Math.floor(Math.random() * recommendations.length)];
+      alert("📚 Совет дня: " + rec);
+    }
+
+    function submitBook() {
+      const title = document.getElementById("bookTitle").value.trim();
+      const author = document.getElementById("bookAuthor").value.trim();
+      const comment = document.getElementById("bookComment").value.trim();
+
       const payload = JSON.stringify({ title, author, comment });
+      console.log("📦 Отправка:", payload);
 
-      console.log("📦 payload to Telegram:", payload);
-
-      if (window.Telegram.WebApp) {
+      if (window.Telegram && Telegram.WebApp) {
         Telegram.WebApp.sendData(payload);
-        alert("📨 Данные отправлены!");
+        alert("📩 Данные отправлены!");
       } else {
         alert("❌ Telegram WebApp API недоступен.");
       }
     }
 
     window.onload = function () {
-      if (window.Telegram.WebApp) {
+      if (window.Telegram && Telegram.WebApp) {
         Telegram.WebApp.ready();
+        console.log("✅ Telegram WebApp готов");
       }
     };
   </script>
-</head>
-<body>
-  <h2>📚 Предложить книгу</h2>
-  <input id="title" placeholder="Название"><br>
-  <input id="author" placeholder="Автор"><br>
-  <textarea id="comment" placeholder="Комментарий (необязательно)"></textarea><br>
-  <button onclick="sendData()">Отправить</button>
 </body>
 </html>
