@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Читать или пропустить?</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
   <style>
     body {
       font-family: sans-serif;
@@ -126,7 +127,7 @@
 
   let books = {};
   let titles = [];
-
+</script>
   // Заменить на свою ссылку на CSV!
   const CSV_URL = "https://docs.google.com/spreadsheets/d/1DUL6pOIg81xMZ5qv9QvO8U6QGNSWiM8TWTCVOUwFrv0/export?format=csv";
 
@@ -148,7 +149,6 @@
       titles = Object.keys(books);
     }
   });
-</script>
 
     const categories = {
       "финансы": ["психология денег", "хулиномика"],
