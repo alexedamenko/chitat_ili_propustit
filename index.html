@@ -96,13 +96,7 @@
 <body>
   <h1>Читать или пропустить?</h1>
 
-  <div class="tag-cloud">
-    <span class="tag" onclick="chooseTag('финансы')">💰 Финансы</span>
-    <span class="tag" onclick="chooseTag('привычки')">🧠 Привычки</span>
-    <span class="tag" onclick="chooseTag('мотивация')">🚀 Мотивация</span>
-    <span class="tag" onclick="chooseTag('продуктивность')">📈 Продуктивность</span>
-    <span class="tag" onclick="chooseTag('мышление')"> Мышление</span>
-  </div>
+<div class="tag-cloud" id="tagCloud"></div>
 
   <input id="bookInput" type="text" placeholder="Введите название книги..." oninput="showSuggestions()"/>
   <div id="autocompleteList" class="autocomplete-list" style="display:none;"></div>
