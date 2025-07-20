@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Читать или пропустить?</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
   <style>
     body {
       font-family: sans-serif;
@@ -121,32 +122,34 @@
   <script>
     Telegram.WebApp.ready();
 
-    const books = {
-      "атомные привычки": {
-        title: "Атомные привычки",
-        author: "Джеймс Клир",
-        verdict: "📘 Читать",
-        reason: "Если устал бороться с собой — это твой путеводитель.",
-        alt: "Мини-привычки (Стивен Гайз)",
-        episode: "https://t.me/readorskip/3"
-      },
-      "психология денег": {
-        title: "Психология денег",
-        author: "Морган Хаузел",
-        verdict: "📘 Читать",
-        reason: "Деньги — это поведение, а не интеллект.",
-        alt: "Хулиномика",
-        episode: "https://t.me/readorskip/2"
-      },
-      "хулиномика": {
-        title: "Хулиномика",
-        author: "Алексей Марков",
-        verdict: "📘 Читать",
-        reason: "Честно и понятно про инвестиции. Особенно для постсоветского пространства.",
-        alt: "Психология денег",
-        episode: "https://t.me/readorskip/4"
-      }
-    };
+    <script>
+  Telegram.WebApp.ready();
+
+  let books = {};
+  let titles = [];
+
+  // Заменить на свою ссылку на CSV!
+  const CSV_URL = "https://docs.google.com/spreadsheets/d/1DUL6pOIg81xMZ5qv9QvO8U6QGNSWiM8TWTCVOUwFrv0/export?format=csv";
+
+  Papa.parse(CSV_URL, {
+    download: true,
+    header: true,
+    complete: function(results) {
+      results.data.forEach(row => {
+        const key = row.title.trim().toLowerCase();
+        books[key] = {
+          title: row.title,
+          author: row.author,
+          verdict: row.verdict,
+          reason: row.reason,
+          alt: row.alt,
+          episode: row.episode
+        };
+      });
+      titles = Object.keys(books);
+    }
+  });
+</script>
 
     const categories = {
       "финансы": ["психология денег", "хулиномика"],
