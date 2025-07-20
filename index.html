@@ -151,11 +151,11 @@
         episode: row.episode,
         category: row.category
           };
-          if (row.category) {
-            row.category.split(',').forEach(tag => {
-              const cat = tag.trim().toLowerCase();
-              if (!categories[cat]) categories[cat] = [];
-              categories[cat].push(key);
+      if (row.category) {
+        row.category.split(',').forEach(tag => {
+      const cat = tag.trim().toLowerCase(); // ← обрезает пробелы
+      if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(key);
             });
           }
         });
