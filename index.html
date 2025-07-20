@@ -110,6 +110,7 @@
 
   <div id="tagResults"></div>
   <div class="result" id="resultBox" style="display: none;"></div>
+  <div class="result" id="categoryResults" style="display: none;"></div>
 
   <div id="suggestForm" style="display:none; margin-top:1rem; background:#fff; padding:1rem; border-radius:0.5rem; box-shadow:0 0 5px rgba(0,0,0,0.1);">
     <h3>📩 Предложить книгу</h3>
@@ -124,6 +125,7 @@
 
   let books = {};
   let titles = [];
+  let categories = {};
 
   // Заменить на свою ссылку на CSV!
   const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSEp6R70z91P1ozfFuZCodTdpXIooVSMnt2ODxSkJ1xJszYVr5VQ2_yV8eUvWmrOxr5-P6Seoryx7K2/pub?gid=0&single=true&output=csv";
@@ -145,20 +147,54 @@
         reason: row.reason,
         alt: row.alt,
         episode: row.episode
-      };
+        category: row.category
+          };
+          if (row.category) {
+            row.category.split(',').forEach(tag => {
+              const cat = tag.trim().toLowerCase();
+              if (!categories[cat]) categories[cat] = [];
+              categories[cat].push(key);
+            });
+          }
+        });
+        titles = Object.keys(books);
+        renderTags();
+      }
     });
 
-    titles = Object.keys(books);
-    console.log("Книги загружены:", titles); // 👈 и это
+    function renderTags() {
+      const tagCloud = document.getElementById('tagCloud');
+      tagCloud.innerHTML = '';
+      Object.keys(categories).forEach(tag => {
+        const el = document.createElement('span');
+        el.className = 'tag';
+        el.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
+        el.onclick = () => showCategory(tag);
+        tagCloud.appendChild(el);
+      });
+    }
 
-  }
-});
+    function showCategory(tag) {
+      const container = document.getElementById('categoryResults');
+      const resultBox = document.getElementById('resultBox');
+      resultBox.style.display = 'none';
+      container.style.display = 'block';
+      container.innerHTML = '';
+      const bookList = categories[tag];
+      if (!bookList) return;
+      bookList.forEach(key => {
+        const book = books[key];
+        const div = document.createElement('div');
+        div.className = 'book-option';
+        div.textContent = `📖 ${book.title}`;
+        div.onclick = () => {
+          document.getElementById('bookInput').value = key;
+          checkBook();
+        };
+        container.appendChild(div);
+      });
+    }
 
-    const categories = {
-      "финансы": ["психология денег", "хулиномика"],
-      "привычки": ["атомные привычки"],
-      "мотивация": []
-    };
 
     function showSuggestions() {
       const input = document.getElementById('bookInput');
