@@ -129,23 +129,30 @@
   const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSEp6R70z91P1ozfFuZCodTdpXIooVSMnt2ODxSkJ1xJszYVr5VQ2_yV8eUvWmrOxr5-P6Seoryx7K2/pubhtml?gid=0&single=true";
 
   Papa.parse(CSV_URL, {
-    download: true,
-    header: true,
-    complete: function(results) {
-      results.data.forEach(row => {
-        const key = row.title.trim().toLowerCase();
-        books[key] = {
-          title: row.title,
-          author: row.author,
-          verdict: row.verdict,
-          reason: row.reason,
-          alt: row.alt,
-          episode: row.episode
-        };
-      });
-      titles = Object.keys(books);
-    }
-  });
+  download: true,
+  header: true,
+  complete: function(results) {
+    console.log("Результаты CSV:", results.data); // 👈 добавь это
+
+    results.data.forEach(row => {
+      if (!row.title || typeof row.title !== "string") return;
+
+      const key = row.title.trim().toLowerCase();
+      books[key] = {
+        title: row.title,
+        author: row.author,
+        verdict: row.verdict,
+        reason: row.reason,
+        alt: row.alt,
+        episode: row.episode
+      };
+    });
+
+    titles = Object.keys(books);
+    console.log("Книги загружены:", titles); // 👈 и это
+
+  }
+});
 
     const categories = {
       "финансы": ["психология денег", "хулиномика"],
