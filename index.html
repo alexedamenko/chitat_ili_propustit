@@ -99,6 +99,7 @@
 <div class="tag-cloud" id="tagCloud"></div>
 
   <input id="bookInput" type="text" placeholder="Введите название книги..." oninput="showSuggestions()"/>
+  <input id="authorInput" type="text" placeholder="Или введите имя автора..." oninput="searchByAuthor()"/>
   <div id="autocompleteList" class="autocomplete-list" style="display:none;"></div>
   <button onclick="checkBook()">Проверить</button>
   <button onclick="randomBook()">🎲 Совет дня</button>
@@ -107,6 +108,8 @@
   <div id="tagResults"></div>
   <div class="result" id="resultBox" style="display: none;"></div>
   <div class="result" id="categoryResults" style="display: none;"></div>
+  <div class="result" id="authorResults" style="display: none;"></div>
+
 
   <div id="suggestForm" style="display:none; margin-top:1rem; background:#fff; padding:1rem; border-radius:0.5rem; box-shadow:0 0 5px rgba(0,0,0,0.1);">
     <h3>📩 Предложить книгу</h3>
@@ -190,7 +193,43 @@
         container.appendChild(div);
       });
     }
+function searchByAuthor() {
+  const query = document.getElementById('authorInput').value.trim().toLowerCase();
+  const container = document.getElementById('authorResults');
+  const resultBox = document.getElementById('resultBox');
+  const categoryResults = document.getElementById('categoryResults');
 
+  // Прячем другие блоки
+  resultBox.style.display = 'none';
+  categoryResults.style.display = 'none';
+
+  container.innerHTML = '';
+  if (!query) {
+    container.style.display = 'none';
+    return;
+  }
+
+  const matches = Object.values(books).filter(book =>
+    book.author && book.author.toLowerCase().includes(query)
+  );
+
+  if (matches.length === 0) {
+    container.innerHTML = '<p>Автор не найден.</p>';
+  } else {
+    matches.forEach(book => {
+      const div = document.createElement('div');
+      div.className = 'book-option';
+      div.textContent = `📖 ${book.title}`;
+      div.onclick = () => {
+        document.getElementById('bookInput').value = book.title.toLowerCase();
+        checkBook();
+      };
+      container.appendChild(div);
+    });
+  }
+
+  container.style.display = 'block';
+}
 
     function showSuggestions() {
       const input = document.getElementById('bookInput');
