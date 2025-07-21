@@ -179,9 +179,12 @@ Papa.parse(CSV_URL, {
       const container = document.getElementById('categoryResults');
       const resultBox = document.getElementById('resultBox');
       const authorResults = document.getElementById('authorResults');
-     
+      
+      // Прячем другие блоки
       resultBox.style.display = 'none';
       authorResults.style.display = 'none';
+      categoryResults.style.display = 'none';
+      
       container.innerHTML = '';
       container.style.display = 'block';
       const bookList = categories[tag];
@@ -206,10 +209,10 @@ function searchByAuthor() {
   const categoryResults = document.getElementById('categoryResults');
 
   // Прячем другие блоки
-  authorResults.style.display = 'none';
-  resultBox.style.display = 'none';
-  categoryResults.style.display = 'none';
-  container.innerHTML = '';
+      resultBox.style.display = 'none';
+      authorResults.style.display = 'none';
+      categoryResults.style.display = 'none';
+      container.innerHTML = '';
   
   if (!query) {
     container.style.display = 'none';
@@ -241,6 +244,7 @@ function showAuthorSuggestions() {
   const input = document.getElementById('authorInput');
   const list = document.getElementById('authorAutocompleteList');
   const query = input.value.trim().toLowerCase();
+  
   list.innerHTML = '';
 
   if (!query) {
@@ -270,9 +274,11 @@ function showBooksByAuthor(authorName) {
   const resultBox = document.getElementById('resultBox');
   const categoryResults = document.getElementById('categoryResults');
 
-  resultBox.style.display = 'none';
-  categoryResults.style.display = 'none';
-  container.innerHTML = '';
+  // Прячем другие блоки
+      resultBox.style.display = 'none';
+      authorResults.style.display = 'none';
+      categoryResults.style.display = 'none';
+      container.innerHTML = '';
   
   const matches = Object.entries(books).filter(([key, book]) =>
     book.author && book.author.toLowerCase() === authorName.toLowerCase()
@@ -326,11 +332,11 @@ function showBooksByAuthor(authorName) {
       const list = document.getElementById('autocompleteList');
       const authorResults = document.getElementById('authorResults');
       document.getElementById('tagResults').innerHTML = '';
-      // Прячем остальные
       
+      // Прячем другие блоки
       resultBox.style.display = 'none';
       authorResults.style.display = 'none';
-      list.style.display = 'none';
+      categoryResults.style.display = 'none';
 
       if (books[name]) {
         const b = books[name];
@@ -359,6 +365,9 @@ function showBooksByAuthor(authorName) {
 
     function chooseTag(tag) {
       const container = document.getElementById('tagResults');
+      // Прячем другие блоки
+      tagResults.style.display = 'none';
+     
       container.innerHTML = '';
       document.getElementById('resultBox').style.display = 'none';
       if (!categories[tag]) return;
