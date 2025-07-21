@@ -91,6 +91,16 @@
 .autocomplete-item:hover {
   background: #f0f0f0;
 }
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.button-group button {
+  flex: 1 1 auto;
+  min-width: 40%;
+}
   </style>
 </head>
 <body>
@@ -104,9 +114,11 @@
   <input id="authorInput" type="text" placeholder="Поиск по автору..." oninput="showAuthorSuggestions()"/>
   <div id="authorAutocompleteList" class="autocomplete-list" style="display:none;"></div>
 
+  <div class="button-group">
   <button onclick="checkBook()">Проверить</button>
   <button onclick="randomBook()">🎲 Совет дня</button>
   <button onclick="toggleSuggestForm()">📩 Предложить книгу</button>
+  </div>  
 
   <div id="tagResults"></div>
   <div class="result" id="resultBox" style="display: none;"></div>
