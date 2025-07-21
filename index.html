@@ -318,6 +318,7 @@ function showBooksByAuthor(authorName) {
     function randomBook() {
       const keys = Object.keys(books);
       const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    document.getElementById('bookInput').value = randomKey;
     document.getElementById('authorInput').value = ''; // очищаем поле автора
     document.getElementById('authorAutocompleteList').style.display = 'none'; // скрываем автокомплит
     document.getElementById('authorResults').style.display = 'none'; // скрываем результаты по автору
