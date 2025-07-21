@@ -319,6 +319,9 @@ function showBooksByAuthor(authorName) {
       const keys = Object.keys(books);
       const randomKey = keys[Math.floor(Math.random() * keys.length)];
       document.getElementById('bookInput').value = randomKey;
+      document.getElementById('authorResults').style.display = 'none';
+      document.getElementById('categoryResults').style.display = 'none';
+      document.getElementById('tagResults').style.display = 'none';
       checkBook();
     }
 
@@ -326,9 +329,10 @@ function showBooksByAuthor(authorName) {
       const container = document.getElementById('tagResults');
       // Прячем другие блоки
       document.getElementById('tagResults').style.display = 'none';
-     document.getElementById('authorResults').style.display = 'none';
+      document.getElementById('authorResults').style.display = 'none';
       document.getElementById('categoryResults').style.display = 'none';
-      
+      document.getElementById('tagResults').style.display = 'block';
+
       container.innerHTML = '';
       document.getElementById('resultBox').style.display = 'none';
       if (!categories[tag]) return;
