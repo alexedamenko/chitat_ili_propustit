@@ -183,8 +183,7 @@ Papa.parse(CSV_URL, {
       // Прячем другие блоки
       resultBox.style.display = 'none';
       authorResults.style.display = 'none';
-      categoryResults.style.display = 'none';
-      
+            
       container.innerHTML = '';
       container.style.display = 'block';
       const bookList = categories[tag];
@@ -201,45 +200,7 @@ Papa.parse(CSV_URL, {
         container.appendChild(div);
       });
     }
-    
-function searchByAuthor() {
-  const query = document.getElementById('authorInput').value.trim().toLowerCase();
-  const container = document.getElementById('authorResults');
-  const resultBox = document.getElementById('resultBox');
-  const categoryResults = document.getElementById('categoryResults');
-
-  // Прячем другие блоки
-      resultBox.style.display = 'none';
-      authorResults.style.display = 'none';
-      categoryResults.style.display = 'none';
-      container.innerHTML = '';
-  
-  if (!query) {
-    container.style.display = 'none';
-    return;
-  }
-
-  const matches = Object.values(books).filter(book =>
-    book.author && book.author.toLowerCase().includes(query)
-  );
-
-  if (matches.length === 0) {
-    container.innerHTML = '<p>Автор не найден.</p>';
-  } else {
-    matches.forEach(book => {
-      const div = document.createElement('div');
-      div.className = 'book-option';
-      div.textContent = `📖 ${book.title}`;
-      div.onclick = () => {
-        document.getElementById('bookInput').value = book.title.toLowerCase();
-        checkBook();
-      };
-      container.appendChild(div);
-    });
-  }
-  container.style.display = 'block';
-}
-    
+      
 function showAuthorSuggestions() {
   const input = document.getElementById('authorInput');
   const list = document.getElementById('authorAutocompleteList');
@@ -276,7 +237,6 @@ function showBooksByAuthor(authorName) {
 
   // Прячем другие блоки
       resultBox.style.display = 'none';
-      authorResults.style.display = 'none';
       categoryResults.style.display = 'none';
       container.innerHTML = '';
   
@@ -336,8 +296,7 @@ function showBooksByAuthor(authorName) {
       // Прячем другие блоки
       resultBox.style.display = 'none';
       authorResults.style.display = 'none';
-      categoryResults.style.display = 'none';
-
+    
       if (books[name]) {
         const b = books[name];
         resultBox.innerHTML = `
@@ -366,8 +325,10 @@ function showBooksByAuthor(authorName) {
     function chooseTag(tag) {
       const container = document.getElementById('tagResults');
       // Прячем другие блоки
-      tagResults.style.display = 'none';
-     
+      document.getElementById('tagResults').style.display = 'none';
+     document.getElementById('authorResults').style.display = 'none';
+      document.getElementById('categoryResults').style.display = 'none';
+      
       container.innerHTML = '';
       document.getElementById('resultBox').style.display = 'none';
       if (!categories[tag]) return;
