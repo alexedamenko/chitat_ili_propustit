@@ -100,6 +100,7 @@
 
   <input id="bookInput" type="text" placeholder="Введите название книги..." oninput="showSuggestions()"/>
   <div id="autocompleteList" class="autocomplete-list" style="display:none;"></div>
+  
   <input id="authorInput" type="text" placeholder="Поиск по автору..." oninput="showAuthorSuggestions()"/>
   <div id="authorAutocompleteList" class="autocomplete-list" style="display:none;"></div>
 
@@ -132,37 +133,32 @@
   // Заменить на свою ссылку на CSV!
   const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSEp6R70z91P1ozfFuZCodTdpXIooVSMnt2ODxSkJ1xJszYVr5VQ2_yV8eUvWmrOxr5-P6Seoryx7K2/pub?gid=0&single=true&output=csv";
 
-  Papa.parse(CSV_URL, {
-  download: true,
-  header: true,
-  complete: function(results) {
-    console.log("Результаты CSV:", results.data); // 👈 добавь это
-authors = Array.from(new Set(results.data
-  .map(row => row.author && row.author.trim())
-  .filter(Boolean)
-));
-    results.data.forEach(row => {
-      if (!row.title || typeof row.title !== "string") return;
-
-      const key = row.title.trim().toLowerCase();
-      books[key] = {
-        title: row.title,
-        author: row.author,
-        verdict: row.verdict,
-        reason: row.reason,
-        alt: row.alt,
-        episode: row.episode,
-        category: row.category
+Papa.parse(CSV_URL, {
+      download: true,
+      header: true,
+      complete: function(results) {
+        results.data.forEach(row => {
+          if (!row.title || typeof row.title !== "string") return;
+          const key = row.title.trim().toLowerCase();
+          books[key] = {
+            title: row.title,
+            author: row.author,
+            verdict: row.verdict,
+            reason: row.reason,
+            alt: row.alt,
+            episode: row.episode,
+            category: row.category
           };
-      if (row.category) {
-        row.category.split(',').forEach(tag => {
-      const cat = tag.trim().toLowerCase(); // ← обрезает пробелы
-      if (!categories[cat]) categories[cat] = [];
-        categories[cat].push(key);
+          if (row.category) {
+            row.category.split(',').forEach(tag => {
+              const cat = tag.trim().toLowerCase();
+              if (!categories[cat]) categories[cat] = [];
+              categories[cat].push(key);
             });
           }
         });
         titles = Object.keys(books);
+        authors = Array.from(new Set(Object.values(books).map(b => b.author).filter(Boolean)));
         renderTags();
       }
     });
@@ -182,9 +178,11 @@ authors = Array.from(new Set(results.data
     function showCategory(tag) {
       const container = document.getElementById('categoryResults');
       const resultBox = document.getElementById('resultBox');
+      const authorResults = document.getElementById('authorResults');
       resultBox.style.display = 'none';
-      container.style.display = 'block';
+      authorResults.style.display = 'none';
       container.innerHTML = '';
+      container.style.display = 'block';
       const bookList = categories[tag];
       if (!bookList) return;
       bookList.forEach(key => {
@@ -199,6 +197,7 @@ authors = Array.from(new Set(results.data
         container.appendChild(div);
       });
     }
+    
 function searchByAuthor() {
   const query = document.getElementById('authorInput').value.trim().toLowerCase();
   const container = document.getElementById('authorResults');
@@ -233,9 +232,9 @@ function searchByAuthor() {
       container.appendChild(div);
     });
   }
-
   container.style.display = 'block';
 }
+    
 function showAuthorSuggestions() {
   const input = document.getElementById('authorInput');
   const list = document.getElementById('authorAutocompleteList');
@@ -263,6 +262,7 @@ function showAuthorSuggestions() {
 
   list.style.display = matches.length > 0 ? 'block' : 'none';
 }
+    
 function showBooksByAuthor(authorName) {
   const container = document.getElementById('authorResults');
   const resultBox = document.getElementById('resultBox');
@@ -270,8 +270,8 @@ function showBooksByAuthor(authorName) {
 
   resultBox.style.display = 'none';
   categoryResults.style.display = 'none';
-
   container.innerHTML = '';
+  
   const matches = Object.entries(books).filter(([key, book]) =>
     book.author && book.author.toLowerCase() === authorName.toLowerCase()
   );
@@ -290,7 +290,6 @@ function showBooksByAuthor(authorName) {
       container.appendChild(div);
     });
   }
-
   container.style.display = 'block';
 }
 
