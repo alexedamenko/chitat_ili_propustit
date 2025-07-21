@@ -99,8 +99,10 @@
 <div class="tag-cloud" id="tagCloud"></div>
 
   <input id="bookInput" type="text" placeholder="Введите название книги..." oninput="showSuggestions()"/>
-  <input id="authorInput" type="text" placeholder="Или введите имя автора..." oninput="searchByAuthor()"/>
   <div id="autocompleteList" class="autocomplete-list" style="display:none;"></div>
+  <input id="authorInput" type="text" placeholder="Поиск по автору..." oninput="showAuthorSuggestions()"/>
+  <div id="authorAutocompleteList" class="autocomplete-list" style="display:none;"></div>
+
   <button onclick="checkBook()">Проверить</button>
   <button onclick="randomBook()">🎲 Совет дня</button>
   <button onclick="toggleSuggestForm()">📩 Предложить книгу</button>
@@ -125,7 +127,8 @@
   let books = {};
   let titles = [];
   let categories = {};
-
+  let authors = [];
+    
   // Заменить на свою ссылку на CSV!
   const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSEp6R70z91P1ozfFuZCodTdpXIooVSMnt2ODxSkJ1xJszYVr5VQ2_yV8eUvWmrOxr5-P6Seoryx7K2/pub?gid=0&single=true&output=csv";
 
@@ -134,7 +137,10 @@
   header: true,
   complete: function(results) {
     console.log("Результаты CSV:", results.data); // 👈 добавь это
-
+authors = Array.from(new Set(results.data
+  .map(row => row.author && row.author.trim())
+  .filter(Boolean)
+));
     results.data.forEach(row => {
       if (!row.title || typeof row.title !== "string") return;
 
@@ -222,6 +228,63 @@ function searchByAuthor() {
       div.textContent = `📖 ${book.title}`;
       div.onclick = () => {
         document.getElementById('bookInput').value = book.title.toLowerCase();
+        checkBook();
+      };
+      container.appendChild(div);
+    });
+  }
+
+  container.style.display = 'block';
+}
+function showAuthorSuggestions() {
+  const input = document.getElementById('authorInput');
+  const list = document.getElementById('authorAutocompleteList');
+  const query = input.value.trim().toLowerCase();
+  list.innerHTML = '';
+
+  if (!query) {
+    list.style.display = 'none';
+    return;
+  }
+
+  const matches = authors.filter(name => name.toLowerCase().includes(query));
+
+  matches.forEach(name => {
+    const item = document.createElement('div');
+    item.classList.add('autocomplete-item');
+    item.textContent = name;
+    item.onclick = () => {
+      input.value = name;
+      list.style.display = 'none';
+      showBooksByAuthor(name);
+    };
+    list.appendChild(item);
+  });
+
+  list.style.display = matches.length > 0 ? 'block' : 'none';
+}
+function showBooksByAuthor(authorName) {
+  const container = document.getElementById('authorResults');
+  const resultBox = document.getElementById('resultBox');
+  const categoryResults = document.getElementById('categoryResults');
+
+  resultBox.style.display = 'none';
+  categoryResults.style.display = 'none';
+
+  container.innerHTML = '';
+  const matches = Object.entries(books).filter(([key, book]) =>
+    book.author && book.author.toLowerCase() === authorName.toLowerCase()
+  );
+
+  if (matches.length === 0) {
+    container.innerHTML = '<p>Книги не найдены.</p>';
+  } else {
+    matches.forEach(([key, book]) => {
+      const div = document.createElement('div');
+      div.className = 'book-option';
+      div.textContent = `📖 ${book.title}`;
+      div.onclick = () => {
+        document.getElementById('bookInput').value = key;
         checkBook();
       };
       container.appendChild(div);
