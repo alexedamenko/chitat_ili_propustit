@@ -186,6 +186,8 @@ Papa.parse(CSV_URL, {
             
       container.innerHTML = '';
       container.style.display = 'block';
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
       const bookList = categories[tag];
       if (!bookList) return;
       bookList.forEach(key => {
@@ -259,6 +261,8 @@ function showBooksByAuthor(authorName) {
     });
   }
   container.style.display = 'block';
+  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
 }
 
     function showSuggestions() {
@@ -313,6 +317,8 @@ function showBooksByAuthor(authorName) {
       }
 
       resultBox.style.display = 'block';
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
     }
 
     function randomBook() {
@@ -351,6 +357,8 @@ function showBooksByAuthor(authorName) {
     function toggleSuggestForm() {
       const form = document.getElementById('suggestForm');
       form.style.display = form.style.display === 'none' ? 'block' : 'none';
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
     }
 
     function submitSuggestion() {
