@@ -207,8 +207,8 @@ function searchByAuthor() {
   // Прячем другие блоки
   resultBox.style.display = 'none';
   categoryResults.style.display = 'none';
-
   container.innerHTML = '';
+  
   if (!query) {
     container.style.display = 'none';
     return;
@@ -322,7 +322,11 @@ function showBooksByAuthor(authorName) {
       const name = nameOverride || input.value.trim().toLowerCase();
       const resultBox = document.getElementById('resultBox');
       const list = document.getElementById('autocompleteList');
+      const authorResults = document.getElementById('authorResults');
       document.getElementById('tagResults').innerHTML = '';
+      // Прячем остальные
+      categoryResults.style.display = 'none';
+      authorResults.style.display = 'none';
       list.style.display = 'none';
 
       if (books[name]) {
