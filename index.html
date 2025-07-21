@@ -179,7 +179,7 @@ Papa.parse(CSV_URL, {
       const container = document.getElementById('categoryResults');
       const resultBox = document.getElementById('resultBox');
       const authorResults = document.getElementById('authorResults');
-      categoryResults.style.display = 'none';
+     
       resultBox.style.display = 'none';
       authorResults.style.display = 'none';
       container.innerHTML = '';
@@ -206,6 +206,7 @@ function searchByAuthor() {
   const categoryResults = document.getElementById('categoryResults');
 
   // Прячем другие блоки
+  authorResults.style.display = 'none';
   resultBox.style.display = 'none';
   categoryResults.style.display = 'none';
   container.innerHTML = '';
