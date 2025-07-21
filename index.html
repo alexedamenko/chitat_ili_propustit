@@ -206,7 +206,6 @@ function searchByAuthor() {
 
   // Прячем другие блоки
   resultBox.style.display = 'none';
-  authorResults.style.display = 'none';
   categoryResults.style.display = 'none';
   container.innerHTML = '';
   
@@ -326,7 +325,8 @@ function showBooksByAuthor(authorName) {
       const authorResults = document.getElementById('authorResults');
       document.getElementById('tagResults').innerHTML = '';
       // Прячем остальные
-      categoryResults.style.display = 'none';
+      
+      resultBox.style.display = 'none';
       authorResults.style.display = 'none';
       list.style.display = 'none';
 
