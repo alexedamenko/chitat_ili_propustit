@@ -462,7 +462,16 @@ function submitSuggestion() {
     author,
     comment
   };
-    .then(() => {
+     
+  fetch("https://script.google.com/macros/s/AKfycbx8V9uR4QEuI6SfV_d355IYvAbi0UgxfBZd9CUE-gxnyCANcXbQSOt1MWy9pJTOgxI/exec", {
+     method: "POST",
+    mode: "no-cors", // отключаем CORS-проверку
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
     alert("📨 Данные отправлены!");
 
     // Очищаем форму
@@ -472,17 +481,7 @@ function submitSuggestion() {
     document.getElementById('suggestForm').style.display = 'none';
     document.getElementById('resultBox').style.display = 'none';
   })
- 
-  fetch("https://script.google.com/macros/s/AKfycbx8V9uR4QEuI6SfV_d355IYvAbi0UgxfBZd9CUE-gxnyCANcXbQSOt1MWy9pJTOgxI/exec", {
-    method: "POST",
-    mode: "no-cors", // Важно, иначе может заблокироваться
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  })
-
-    .catch((err) => {
+  .catch((err) => {
     alert("❌ Ошибка при отправке. Попробуйте ещё раз.");
     console.error(err);
   });
