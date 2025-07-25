@@ -462,15 +462,8 @@ function submitSuggestion() {
     author,
     comment
   };
-    alert("📨 Данные отправлены!");
-      .then(() => {
-    // Очищаем форму
-    document.getElementById('suggTitle').value = '';
-    document.getElementById('suggAuthor').value = '';
-    document.getElementById('suggComment').value = '';
-    document.getElementById('suggestForm').style.display = 'none';
-    document.getElementById('resultBox').style.display = 'none';
-  })
+  alert("📨 Данные отправлены!");
+
   fetch("https://script.google.com/macros/s/AKfycbx8V9uR4QEuI6SfV_d355IYvAbi0UgxfBZd9CUE-gxnyCANcXbQSOt1MWy9pJTOgxI/exec", {
     method: "POST",
     mode: "no-cors", // Важно, иначе может заблокироваться
@@ -478,6 +471,14 @@ function submitSuggestion() {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
+  })
+    .then(() => {
+    // Очищаем форму
+    document.getElementById('suggTitle').value = '';
+    document.getElementById('suggAuthor').value = '';
+    document.getElementById('suggComment').value = '';
+    document.getElementById('suggestForm').style.display = 'none';
+    document.getElementById('resultBox').style.display = 'none';
   })
     .catch((err) => {
     alert("❌ Ошибка при отправке. Попробуйте ещё раз.");
