@@ -458,6 +458,9 @@ function showBooksByAuthor(authorName) {
   document.getElementById('suggTitle').value = '';
   document.getElementById('suggAuthor').value = '';
   document.getElementById('suggComment').value = '';
+        // скрыть форму
+  document.getElementById('suggestForm').style.display = 'none';
+        
   // Можно закрыть WebApp (по желанию)
   // Telegram.WebApp.close();
 } else {
