@@ -198,8 +198,7 @@ Papa.parse(CSV_URL, {
             
       container.innerHTML = '';
       container.style.display = 'block';
-      container.scrollIntoView({ behavior: 'smooth' });
-
+     
       const bookList = categories[tag];
       if (!bookList) return;
       bookList.forEach(key => {
@@ -213,6 +212,10 @@ Papa.parse(CSV_URL, {
         };
         container.appendChild(div);
       });
+      // Даем время DOM-элементам отрендериться, затем скроллим
+  setTimeout(() => {
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
     }
       
 function showAuthorSuggestions() {
