@@ -448,31 +448,45 @@ function showBooksByAuthor(authorName) {
 }
 
 function submitSuggestion() {
-      const title = document.getElementById('suggTitle').value.trim();
-      if (!title) {
-        alert("Пожалуйста, введите название книги");
-        return;
-      }
-      const author = document.getElementById('suggAuthor').value.trim();
-      const comment = document.getElementById('suggComment').value.trim();
-      const payload = JSON.stringify({ title, author, comment });
+  const title = document.getElementById('suggTitle').value.trim();
+  if (!title) {
+    alert("Пожалуйста, введите название книги");
+    return;
+  }
 
-      if (window.Telegram?.WebApp?.sendData) {
-  Telegram.WebApp.sendData(payload);
-  alert("📨 Данные отправлены!");
-         // Сброс формы
-  document.getElementById('suggTitle').value = '';
-  document.getElementById('suggAuthor').value = '';
-  document.getElementById('suggComment').value = '';
-        // скрыть форму
-  document.getElementById('suggestForm').style.display = 'none';
+  const author = document.getElementById('suggAuthor').value.trim();
+  const comment = document.getElementById('suggComment').value.trim();
 
-  // Можно закрыть WebApp (по желанию)
-  // Telegram.WebApp.close();
-} else {
-  alert("❌ Telegram WebApp API Недоступен.");
+  const payload = {
+    title,
+    author,
+    comment
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbzCtVKBpSpIJ_etjFLF-R_9X5uK8n5_ncxJTFJvZqAjp0JybO19W7CnxTFd1tkDHkw/exec", {
+    method: "POST",
+    mode: "no-cors", // Важно, иначе может заблокироваться
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  }).then(() => {
+    alert("📨 Данные отправлены!");
+    // Очищаем форму
+    document.getElementById('suggTitle').value = '';
+    document.getElementById('suggAuthor').value = '';
+    document.getElementById('suggComment').value = '';
+    document.getElementById('suggestForm').style.display = 'none';
+    document.getElementById('resultBox').style.display = 'none';
+  }).catch((err) => {
+    alert("❌ Ошибка при отправке. Попробуйте ещё раз.");
+    console.error(err);
+  });
 }
-    }
+
+
+
+    
   </script>
 </body>
 </html>
