@@ -435,11 +435,17 @@ function showBooksByAuthor(authorName) {
     }
 
     function toggleSuggestForm() {
-      const form = document.getElementById('suggestForm');
-      form.style.display = form.style.display === 'none' ? 'block' : 'none';
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const form = document.getElementById('suggestForm');
+  const resultBox = document.getElementById('resultBox');
 
-    }
+  // скрыть карточку книги
+  resultBox.style.display = 'none';
+  resultBox.innerHTML = '';
+
+  // переключить отображение формы
+  form.style.display = form.style.display === 'none' ? 'block' : 'none';
+  form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
     function submitSuggestion() {
       const title = document.getElementById('suggTitle').value.trim();
