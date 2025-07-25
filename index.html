@@ -6,398 +6,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Читать или пропустить?</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
   <style>
     body {
       font-family: sans-serif;
       padding: 1rem;
       background: #f9f9f9;
+      margin: 0;
     }
-    h1 {
+    #startScreen {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    #startScreen img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    #startScreen h2 {
       font-size: 1.5rem;
       margin-bottom: 1rem;
     }
-    input, textarea {
-      width: 100%;
-      padding: 0.5rem;
-      margin-bottom: 0.5rem;
+    #startScreen p {
       font-size: 1rem;
-      border-radius: 0.5rem;
-      border: 1px solid #ccc;
+      margin: 0.5rem 0;
     }
-    button {
-      padding: 0.75rem 1.25rem;
-      font-size: 1rem;
+    #startScreen button {
+      margin-top: 1.5rem;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
       border: none;
-      background: #2a9d8f;
+      border-radius: 0.5rem;
+      background-color: #2a9d8f;
       color: white;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      margin-right: 0.5rem;
-    }
-    .result {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .tag-cloud {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .tag {
-      background: #e0f7f1;
-      color: #2a9d8f;
-      padding: 0.4rem 0.8rem;
-      border-radius: 1rem;
-      font-size: 0.9rem;
-      cursor: pointer;
-      user-select: none;
-    }
-    .tag:hover {
-      background: #b8ece1;
-    }
-    .book-option {
-      display: block;
-      background: #ffffff;
-      padding: 0.5rem 1rem;
-      margin-bottom: 0.5rem;
-      border-radius: 0.5rem;
-      border: 1px solid #ddd;
       cursor: pointer;
     }
-    .book-option:hover {
-      background: #f0f0f0;
-    }
-  .autocomplete-list {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  max-height: 200px;
-  overflow-y: auto;
-  margin-top: 0.3rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: absolute;
-  width: 100%;
-  z-index: 1000;
-}
-.autocomplete-item {
-  padding: 0.5rem;
-  cursor: pointer;
-}
-.autocomplete-item:hover {
-  background: #f0f0f0;
-}
-.button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-.button-group button {
-  flex: 1 1 auto;
-  min-width: 40%;
-}
   </style>
 </head>
 <body>
-  <h1>Читать или пропустить?</h1>
+  <div id="startScreen">
+    <img src="https://chitat-ili-propustit.vercel.app/welcome-cover.png" alt="Читать или пропустить">
+    <h2>Добро пожаловать!</h2>
+    <p><strong>🎲 Найти, что почитать</strong><br>✨ Попробуй «Совет дня»</p>
+    <p><strong>✅ Проверить книгу</strong><br>🔍 Узнай вердикт, альтернативу и выпуск подкаста</p>
+    <p><strong>💬 Предложить свою</strong><br>📝 Заполни простую форму</p>
+    <p>✔️ Ни одной платной рекомендации. Только книги, которые мы читали сами.</p>
+    <button onclick="startApp()">Начать</button>
+  </div>
 
-<div class="tag-cloud" id="tagCloud"></div>
-
-  <input id="bookInput" type="text" placeholder="Введите название книги..." oninput="showSuggestions()"/>
-  <div id="autocompleteList" class="autocomplete-list" style="display:none;"></div>
-  
-  <input id="authorInput" type="text" placeholder="Поиск по автору..." oninput="showAuthorSuggestions()"/>
-  <div id="authorAutocompleteList" class="autocomplete-list" style="display:none;"></div>
-
-  <div class="button-group">
-  <button onclick="checkBook()">Проверить</button>
-  <button onclick="randomBook()">🎲 Совет дня</button>
-  <button onclick="toggleSuggestForm()">📩 Предложить книгу</button>
-  </div>  
-
-  <div id="tagResults"></div>
-  <div class="result" id="resultBox" style="display: none;"></div>
-  <div class="result" id="categoryResults" style="display: none;"></div>
-  <div class="result" id="authorResults" style="display: none;"></div>
-
-
-  <div id="suggestForm" style="display:none; margin-top:1rem; background:#fff; padding:1rem; border-radius:0.5rem; box-shadow:0 0 5px rgba(0,0,0,0.1);">
-    <h3>📩 Предложить книгу</h3>
-    <input id="suggTitle" type="text" placeholder="Название книги" />
-    <input id="suggAuthor" type="text" placeholder="Автор (необязательно)" />
-    <textarea id="suggComment" placeholder="Комментарий (необязательно)" rows="3"></textarea>
-    <button onclick="submitSuggestion()">Отправить</button>
+  <div id="mainApp" style="display:none;">
+    <h1>Здесь будет основной интерфейс приложения</h1>
+    <!-- Подключение реального интерфейса будет после интеграции -->
   </div>
 
   <script>
     Telegram.WebApp.ready();
-
-  let books = {};
-  let titles = [];
-  let categories = {};
-  let authors = [];
-    
-  // Заменить на свою ссылку на CSV!
-  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSEp6R70z91P1ozfFuZCodTdpXIooVSMnt2ODxSkJ1xJszYVr5VQ2_yV8eUvWmrOxr5-P6Seoryx7K2/pub?gid=0&single=true&output=csv";
-
-Papa.parse(CSV_URL, {
-      download: true,
-      header: true,
-      complete: function(results) {
-        results.data.forEach(row => {
-          if (!row.title || typeof row.title !== "string") return;
-          const key = row.title.trim().toLowerCase();
-          books[key] = {
-            title: row.title,
-            author: row.author,
-            verdict: row.verdict,
-            reason: row.reason,
-            alt: row.alt,
-            episode: row.episode,
-            category: row.category
-          };
-          if (row.category) {
-            row.category.split(',').forEach(tag => {
-              const cat = tag.trim().toLowerCase();
-              if (!categories[cat]) categories[cat] = [];
-              categories[cat].push(key);
-            });
-          }
-        });
-        titles = Object.keys(books);
-        authors = Array.from(new Set(Object.values(books).map(b => b.author).filter(Boolean)));
-        renderTags();
-      }
-    });
-
-    function renderTags() {
-      const tagCloud = document.getElementById('tagCloud');
-      tagCloud.innerHTML = '';
-      Object.keys(categories).forEach(tag => {
-        const el = document.createElement('span');
-        el.className = 'tag';
-        el.textContent = tag.charAt(0).toUpperCase() + tag.slice(1);
-        el.onclick = () => showCategory(tag);
-        tagCloud.appendChild(el);
-      });
-    }
-
-    function showCategory(tag) {
-      const container = document.getElementById('categoryResults');
-      const resultBox = document.getElementById('resultBox');
-      const authorResults = document.getElementById('authorResults');
-      
-      // Прячем другие блоки
-      resultBox.style.display = 'none';
-      authorResults.style.display = 'none';
-            
-      container.innerHTML = '';
-      container.style.display = 'block';
-     
-      const bookList = categories[tag];
-      if (!bookList) return;
-      bookList.forEach(key => {
-        const book = books[key];
-        const div = document.createElement('div');
-        div.className = 'book-option';
-        div.textContent = `📖 ${book.title}`;
-        div.onclick = () => {
-          document.getElementById('bookInput').value = key;
-          checkBook();
-        };
-        container.appendChild(div);
-      });
-      // Даем время DOM-элементам отрендериться, затем скроллим
-  setTimeout(() => {
-    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
-    }
-      
-function showAuthorSuggestions() {
-  const input = document.getElementById('authorInput');
-  const list = document.getElementById('authorAutocompleteList');
-  const query = input.value.trim().toLowerCase();
-  
-  list.innerHTML = '';
-
-  if (!query) {
-    list.style.display = 'none';
-    return;
-  }
-
-  const matches = authors.filter(name => name.toLowerCase().includes(query));
-
-  matches.forEach(name => {
-    const item = document.createElement('div');
-    item.classList.add('autocomplete-item');
-    item.textContent = name;
-    item.onclick = () => {
-      input.value = name;
-      list.style.display = 'none';
-      showBooksByAuthor(name);
-    };
-    list.appendChild(item);
-  });
-
-  list.style.display = matches.length > 0 ? 'block' : 'none';
-}
-    
-function showBooksByAuthor(authorName) {
-  const container = document.getElementById('authorResults');
-  const resultBox = document.getElementById('resultBox');
-  const categoryResults = document.getElementById('categoryResults');
-
-  // Прячем другие блоки
-      resultBox.style.display = 'none';
-      categoryResults.style.display = 'none';
-      container.innerHTML = '';
-  
-  const matches = Object.entries(books).filter(([key, book]) =>
-    book.author && book.author.toLowerCase() === authorName.toLowerCase()
-  );
-
-  if (matches.length === 0) {
-    container.innerHTML = '<p>Книги не найдены.</p>';
-  } else {
-    matches.forEach(([key, book]) => {
-      const div = document.createElement('div');
-      div.className = 'book-option';
-      div.textContent = `📖 ${book.title}`;
-      div.onclick = () => {
-        document.getElementById('bookInput').value = key;
-        checkBook();
-      };
-      container.appendChild(div);
-    });
-  }
-  container.style.display = 'block';
-  container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-}
-
-    function showSuggestions() {
-      const input = document.getElementById('bookInput');
-      const list = document.getElementById('autocompleteList');
-      const query = input.value.trim().toLowerCase();
-      list.innerHTML = '';
-      if (!query) {
-        list.style.display = 'none';
-        return;
-      }
-      const matches = titles.filter(title => title.includes(query));
-      matches.forEach(title => {
-        const item = document.createElement('div');
-        item.classList.add('autocomplete-item');
-        item.textContent = title;
-        item.onclick = () => {
-          input.value = title;
-          list.style.display = 'none';
-          checkBook();
-        };
-        list.appendChild(item);
-      });
-      list.style.display = matches.length > 0 ? 'block' : 'none';
-    }
-
-    function checkBook(nameOverride = null) {
-      const input = document.getElementById('bookInput');
-      const name = nameOverride || input.value.trim().toLowerCase();
-      const resultBox = document.getElementById('resultBox');
-      const list = document.getElementById('autocompleteList');
-      const authorResults = document.getElementById('authorResults');
-      document.getElementById('tagResults').innerHTML = '';
-      
-      // Прячем другие блоки
-      resultBox.style.display = 'none';
-      authorResults.style.display = 'none';
-    
-      if (books[name]) {
-        const b = books[name];
-        resultBox.innerHTML = `
-          <h3>📖 ${b.title}</h3>
-          <p>✍️ ${b.author}</p>
-          <p><strong>${b.verdict}</strong></p>
-          <p><strong>Почему:</strong> ${b.reason}</p>
-          <p><strong>Альтернатива:</strong> ${b.alt}</p>
-          ${b.episode ? `<p><a href="${b.episode}" target="_blank">🎧 Слушать выпуск</a></p>` : ''}
-        `;
-      } else {
-        resultBox.innerHTML = `<p>Книга не найдена. Можешь предложить свою 👇</p>`;
-        toggleSuggestForm();
-      }
-
-      resultBox.style.display = 'block';
-      resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    }
-
-    function randomBook() {
-      const keys = Object.keys(books);
-      const randomKey = keys[Math.floor(Math.random() * keys.length)];
-    document.getElementById('bookInput').value = randomKey;
-    document.getElementById('authorInput').value = ''; // очищаем поле автора
-    document.getElementById('authorAutocompleteList').style.display = 'none'; // скрываем автокомплит
-    document.getElementById('authorResults').style.display = 'none'; // скрываем результаты по автору
-    document.getElementById('categoryResults').style.display = 'none'; // на всякий случай
-    document.getElementById('tagResults').style.display = 'none'; // на всякий случай
-
-      checkBook();
-    }
-
-    function chooseTag(tag) {
-      const container = document.getElementById('tagResults');
-      // Прячем другие блоки
-      document.getElementById('tagResults').style.display = 'none';
-      document.getElementById('authorResults').style.display = 'none';
-      document.getElementById('categoryResults').style.display = 'none';
-      document.getElementById('tagResults').style.display = 'block';
-
-      container.innerHTML = '';
-      document.getElementById('resultBox').style.display = 'none';
-      if (!categories[tag]) return;
-      categories[tag].forEach(book => {
-        const btn = document.createElement('div');
-        btn.className = 'book-option';
-        btn.textContent = '📖 ' + book;
-        btn.onclick = () => checkBook(book);
-        container.appendChild(btn);
-      });
-    }
-
-    function toggleSuggestForm() {
-      const form = document.getElementById('suggestForm');
-      form.style.display = form.style.display === 'none' ? 'block' : 'none';
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    }
-
-    function submitSuggestion() {
-      const title = document.getElementById('suggTitle').value.trim();
-      if (!title) {
-        alert("Пожалуйста, введите название книги");
-        return;
-      }
-      const author = document.getElementById('suggAuthor').value.trim();
-      const comment = document.getElementById('suggComment').value.trim();
-      const payload = JSON.stringify({ title, author, comment });
-
-      if (window.Telegram?.WebApp?.sendData) {
-  Telegram.WebApp.sendData(payload);
-  alert("📨 Данные отправлены!");
-         // Сброс формы
-  document.getElementById('suggTitle').value = '';
-  document.getElementById('suggAuthor').value = '';
-  document.getElementById('suggComment').value = '';
-  // Можно закрыть WebApp (по желанию)
-  // Telegram.WebApp.close();
-} else {
-  alert("❌ Telegram WebApp API Недоступен.");
-}
+    function startApp() {
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('mainApp').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
 </body>
