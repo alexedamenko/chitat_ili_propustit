@@ -463,7 +463,7 @@ function submitSuggestion() {
     comment
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbzCtVKBpSpIJ_etjFLF-R_9X5uK8n5_ncxJTFJvZqAjp0JybO19W7CnxTFd1tkDHkw/exec", {
+  fetch("https://script.google.com/macros/s/AKfycbzUU8V4ktWNrnfnr7qvXiubzySV2sUIjyhUYc8FEl0_fWiffcLQPgSWpojsoJtaKWE/exec", {
     method: "POST",
  //   mode: "no-cors", // Важно, иначе может заблокироваться
     headers: {
@@ -472,11 +472,11 @@ function submitSuggestion() {
     body: JSON.stringify(payload)
   })
     .then(res => res.json())
-.then(data => {
-  if (data.success) {
-    alert("📨 Данные отправлены!");
+    .then(data => {
+      if (data.success) {
+      alert("📨 Данные отправлены!");
     // сброс и закрытие формы
-  } else {
+    } else {
     alert("❌ Не удалось отправить данные.");
   }
 })
