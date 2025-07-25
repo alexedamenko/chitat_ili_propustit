@@ -465,25 +465,28 @@ function submitSuggestion() {
 
   fetch("https://script.google.com/macros/s/AKfycbzUU8V4ktWNrnfnr7qvXiubzySV2sUIjyhUYc8FEl0_fWiffcLQPgSWpojsoJtaKWE/exec", {
     method: "POST",
- //   mode: "no-cors", // Важно, иначе может заблокироваться
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(payload)
   })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
       alert("📨 Данные отправлены!");
-    // сброс и закрытие формы
+      document.getElementById('suggTitle').value = '';
+      document.getElementById('suggAuthor').value = '';
+      document.getElementById('suggComment').value = '';
+      document.getElementById('suggestForm').style.display = 'none';
+      document.getElementById('resultBox').style.display = 'none';
     } else {
-    alert("❌ Не удалось отправить данные.");
-  }
-})
-.catch(err => {
-  alert("❌ Ошибка сети. Попробуйте ещё раз.");
-  console.error(err);
-});
+      alert("❌ Ошибка сервера: " + (data.error || "Неизвестная ошибка"));
+    }
+  })
+  .catch(err => {
+    alert("❌ Ошибка сети. Попробуйте ещё раз.");
+    console.error(err);
+  });
 }
 
 
