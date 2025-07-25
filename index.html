@@ -462,7 +462,7 @@ function submitSuggestion() {
     author,
     comment
   };
-
+    alert("📨 Данные отправлены!");
   fetch("https://script.google.com/macros/s/AKfycbx8V9uR4QEuI6SfV_d355IYvAbi0UgxfBZd9CUE-gxnyCANcXbQSOt1MWy9pJTOgxI/exec", {
     method: "POST",
     mode: "no-cors", // Важно, иначе может заблокироваться
@@ -471,7 +471,7 @@ function submitSuggestion() {
     },
     body: JSON.stringify(payload)
   }).then(() => {
-    alert("📨 Данные отправлены!");
+
     // Очищаем форму
     document.getElementById('suggTitle').value = '';
     document.getElementById('suggAuthor').value = '';
