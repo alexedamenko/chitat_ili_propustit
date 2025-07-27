@@ -398,7 +398,7 @@ function showBooksByAuthor(authorName) {
 
       resultBox.style.display = 'block';
       resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
+      logEvent("check_book", { book_title: name });
     }
 
     function randomBook() {
@@ -412,6 +412,7 @@ function showBooksByAuthor(authorName) {
     document.getElementById('tagResults').style.display = 'none'; // на всякий случай
 
       checkBook(randomKey); // передаём напрямую, input не трогаем
+      logEvent("random_book");
     }
 
     function chooseTag(tag) {
@@ -485,8 +486,25 @@ function submitSuggestion() {
     alert("❌ Ошибка при отправке. Попробуйте ещё раз.");
     console.error(err);
   });
+  logEvent("suggest_sent", { title });
 }
 
+function logEvent(eventName, details = {}) {
+  const payload = {
+    event: eventName,
+    timestamp: new Date().toISOString(),
+    ...details
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbwXRn_jOqcxuTW6n1D0rwwcN8uRlQugR-7sKvBydlTVUdUhkFKKHvG4Y7jp2w1jYHzc/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+}    
 
     
   </script>
@@ -497,6 +515,7 @@ function submitSuggestion() {
 
   <script>
     Telegram.WebApp.ready();
+    logEvent("app_open");
     function startApp() {
       document.getElementById('startScreen').style.display = 'none';
       document.getElementById('mainApp').style.display = 'block';
