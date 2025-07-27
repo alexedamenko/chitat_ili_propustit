@@ -497,6 +497,8 @@ function logEvent(eventName, details = {}) {
   const payload = {
     event: eventName,
     timestamp: new Date().toISOString(),
+    platform: navigator.platform,
+    user_id: userId,
     ...details
   };
 
