@@ -492,6 +492,8 @@ function submitSuggestion() {
 }
 
 function logEvent(eventName, details = {}) {
+  const tgUser = Telegram.WebApp.initDataUnsafe?.user;
+  const userId = tgUser?.id || "unknown";
   const payload = {
     event: eventName,
     timestamp: new Date().toISOString(),
