@@ -201,6 +201,8 @@
 
   <script>
     Telegram.WebApp.ready();
+    const tgUser = Telegram.WebApp.initDataUnsafe?.user;
+    const userId = tgUser?.id || "unknown";
 
   let books = {};
   let titles = [];
