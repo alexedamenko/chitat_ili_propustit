@@ -54,3 +54,4 @@ function showSuggestions(inputEl, listEl, sourceArray, onSelect) {
 } else {
   listEl.style.display = 'none';
 }
+  }
