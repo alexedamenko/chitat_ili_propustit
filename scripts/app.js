@@ -14,12 +14,16 @@ export async function initApp() {
     <div class="tag-cloud" id="tagCloud"></div>
 
     <div class="search-block">
+  <div class="input-wrapper">
     <input id="bookInput" type="text" placeholder="Введите название книги..." />
     <div id="autocompleteList" class="autocomplete-list" style="display:none;"></div>
+  </div>
 
+  <div class="input-wrapper">
     <input id="authorInput" type="text" placeholder="Поиск по автору..." />
     <div id="authorAutocompleteList" class="autocomplete-list" style="display:none;"></div>
-    </div>
+  </div>
+</div>
 
     <div class="button-group">
       <button id="checkBtn">Проверить</button>
