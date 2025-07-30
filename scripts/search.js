@@ -43,16 +43,14 @@ function showSuggestions(inputEl, listEl, sourceArray, onSelect) {
   });
 
   if (matches.length > 0) {
-    listEl.style.display = 'block';
-    setTimeout(() => {
-    listEl.scrollIntoView({
-  behavior: 'smooth',
-  block: 'start',
-  inline: 'nearest'
-});
-    }, 100);
-  } else {
-    listEl.style.display = 'none';
-  }
-}
+  listEl.style.display = 'block';
 
+  // Принудительно скроллим страницу вверх к списку
+  setTimeout(() => {
+    const rect = listEl.getBoundingClientRect();
+    const offset = rect.top + window.scrollY - 80;
+    window.scrollTo({ top: offset, behavior: 'smooth' });
+  }, 100);
+} else {
+  listEl.style.display = 'none';
+}
