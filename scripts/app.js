@@ -5,6 +5,13 @@ let titles = [];
 let categories = {};
 let authors = [];
 
+import { setupSearch } from './search.js';
+
+setupSearch(titles, authors, {
+  onBookSelect: checkBook,
+  onAuthorSelect: showBooksByAuthor
+});
+
 export async function initApp() {
   const container = document.getElementById('mainApp');
 
@@ -166,4 +173,32 @@ function submitSuggestion() {
   });
 
   logEvent("suggest_sent", { title });
+}
+function showBooksByAuthor(authorName) {
+  const container = document.getElementById('authorResults');
+  const resultBox = document.getElementById('resultBox');
+  const categoryResults = document.getElementById('categoryResults');
+
+  resultBox.style.display = 'none';
+  categoryResults.style.display = 'none';
+  container.innerHTML = '';
+
+  const matches = Object.entries(books).filter(([_, book]) =>
+    book.author?.toLowerCase() === authorName.toLowerCase()
+  );
+
+  if (matches.length === 0) {
+    container.innerHTML = '<p>Книги не найдены.</p>';
+  } else {
+    matches.forEach(([key, book]) => {
+      const div = document.createElement('div');
+      div.className = 'book-option';
+      div.textContent = `📖 ${book.title}`;
+      div.onclick = () => checkBook(key);
+      container.appendChild(div);
+    });
+  }
+
+  container.style.display = 'block';
+  scrollIntoViewIfNeeded(container);
 }
