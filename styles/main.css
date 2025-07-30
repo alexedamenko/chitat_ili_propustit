@@ -1,0 +1,40 @@
+body {
+  font-family: sans-serif;
+  padding: 1rem;
+  background: #f9f9f9;
+  margin: 0;
+}
+
+#startScreen {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+#startScreen img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+}
+#startScreen h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+#startScreen p {
+  font-size: 1rem;
+  margin: 1.5rem 0;
+}
+.note {
+  font-size: 1.1rem;
+  margin: 2rem 0;
+}
+#startScreen button {
+  margin-top: 1.5rem;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #2a9d8f;
+  color: white;
+  cursor: pointer;
+}
+
