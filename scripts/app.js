@@ -1,4 +1,5 @@
 import { logEvent, fetchBooksFromCSV, createTagElement, scrollIntoViewIfNeeded } from './utils.js';
+import { setupSearch } from './search.js';
 
 let books = {};
 let titles = [];
@@ -53,6 +54,10 @@ export async function initApp() {
   document.getElementById('submitSuggestionBtn').onclick = () => submitSuggestion();
   document.getElementById('bookInput').oninput = () => showSuggestions();
   document.getElementById('authorInput').oninput = () => showAuthorSuggestions();  
+  setupSearch(titles, authors, {
+  onBookSelect: checkBook,
+  onAuthorSelect: showBooksByAuthor
+});
 }
 
 function renderTags() {
