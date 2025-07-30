@@ -73,6 +73,10 @@ export function createTagElement(tag, onClick) {
 
 export function scrollIntoViewIfNeeded(element) {
   setTimeout(() => {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+      inline: 'nearest'
+    });
   }, 100);
 }
