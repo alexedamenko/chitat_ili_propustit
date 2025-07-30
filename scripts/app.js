@@ -53,6 +53,14 @@ export async function initApp() {
   document.getElementById('submitSuggestionBtn').onclick = () => submitSuggestion();
   document.getElementById('bookInput').oninput = () => showSuggestions();
   document.getElementById('authorInput').oninput = () => showAuthorSuggestions();
+
+import { setupSearch } from './search.js';
+
+setupSearch(titles, authors, {
+  onBookSelect: checkBook,
+  onAuthorSelect: showBooksByAuthor
+});
+  
 }
 
 function renderTags() {
