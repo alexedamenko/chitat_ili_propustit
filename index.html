@@ -494,11 +494,15 @@ function submitSuggestion() {
 function logEvent(eventName, details = {}) {
   const tgUser = Telegram.WebApp.initDataUnsafe?.user;
   const userId = tgUser?.id || "unknown";
+  const username = tgUser?.username || "unknown";
+  const name = tgUser?.first_name || "unknown";
   const payload = {
     event: eventName,
     timestamp: new Date().toISOString(),
     platform: navigator.platform,
     user_id: userId,
+    username: username,
+    user_first_name: first_name,
     ...details
   };
 
