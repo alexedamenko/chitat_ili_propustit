@@ -45,10 +45,10 @@ function showSuggestions(inputEl, listEl, sourceArray, onSelect) {
   if (matches.length > 0) {
     listEl.style.display = 'block';
     setTimeout(() => {
-      listEl.scrollIntoView({
+    listEl.scrollIntoView({
   behavior: 'smooth',
-  block: 'nearest',
-  inline: 'center'
+  block: 'start',
+  inline: 'nearest'
 });
     }, 100);
   } else {
