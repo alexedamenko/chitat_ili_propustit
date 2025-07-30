@@ -5,13 +5,6 @@ let titles = [];
 let categories = {};
 let authors = [];
 
-import { setupSearch } from './search.js';
-
-setupSearch(titles, authors, {
-  onBookSelect: checkBook,
-  onAuthorSelect: showBooksByAuthor
-});
-
 export async function initApp() {
   const container = document.getElementById('mainApp');
 
