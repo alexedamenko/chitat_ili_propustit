@@ -1,3 +1,4 @@
+/* Общие стили */
 body {
   font-family: sans-serif;
   padding: 1rem;
@@ -5,6 +6,12 @@ body {
   margin: 0;
 }
 
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Приветственный экран */
 #startScreen {
   text-align: center;
   padding: 2rem 1rem;
@@ -38,3 +45,108 @@ body {
   cursor: pointer;
 }
 
+/* Инпуты и кнопки */
+input, textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  border: none;
+  background: #2a9d8f;
+  color: white;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+/* Кнопки в блоке */
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.button-group button {
+  flex: 1 1 auto;
+  min-width: 40%;
+}
+
+/* Результаты и карточки */
+.result {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Теги */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.tag {
+  background: #e0f7f1;
+  color: #2a9d8f;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+.tag:hover {
+  background: #b8ece1;
+}
+
+/* Кнопки-карточки книг */
+.book-option {
+  display: block;
+  background: #ffffff;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+.book-option:hover {
+  background: #f0f0f0;
+}
+
+/* Автокомплит */
+.autocomplete-list {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 0.3rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+}
+.autocomplete-item {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+.autocomplete-item:hover {
+  background: #f0f0f0;
+}
+
+/* Форма предложения книги */
+.suggest-form {
+  margin-top: 1rem;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
