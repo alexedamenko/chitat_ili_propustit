@@ -30,9 +30,9 @@ function showSuggestions(inputEl, listEl, sourceArray, onSelect) {
     return;
   }
 
-  const matches = sourceArray.filter(item =>
-    item.toLowerCase().includes(query)
-  );
+  const matches = sourceArray
+    .filter(item => item.toLowerCase().includes(query))
+    .sort((a, b) => a.localeCompare(b, 'ru', { sensitivity: 'base' }));
 
   matches.forEach(match => {
     const item = document.createElement('div');
