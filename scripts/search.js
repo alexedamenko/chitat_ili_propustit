@@ -45,7 +45,11 @@ function showSuggestions(inputEl, listEl, sourceArray, onSelect) {
   if (matches.length > 0) {
     listEl.style.display = 'block';
     setTimeout(() => {
-      listEl.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      listEl.scrollIntoView({
+  behavior: 'smooth',
+  block: 'nearest',
+  inline: 'center'
+});
     }, 100);
   } else {
     listEl.style.display = 'none';
