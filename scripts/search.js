@@ -42,5 +42,13 @@ function showSuggestions(inputEl, listEl, sourceArray, onSelect) {
     listEl.appendChild(item);
   });
 
-  listEl.style.display = matches.length > 0 ? 'block' : 'none';
+  if (matches.length > 0) {
+    listEl.style.display = 'block';
+    setTimeout(() => {
+      listEl.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 100);
+  } else {
+    listEl.style.display = 'none';
+  }
 }
+
