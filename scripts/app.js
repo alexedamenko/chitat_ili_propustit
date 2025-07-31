@@ -160,6 +160,12 @@ function submitSuggestion() {
   const author = document.getElementById('suggAuthor').value.trim();
   const comment = document.getElementById('suggComment').value.trim();
 
+  console.log('Отправляем книгу:', {
+  title,
+  author,
+  comment
+});
+  
   fetch(API.suggest, {
     method: "POST",
     mode: "no-cors",
