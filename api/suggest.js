@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   try {
     const { title, author, comment } = req.body;
 
+    console.log("📨 Пришёл запрос:", title, author, comment);
     console.log("SUGGEST_ENDPOINT:", endpoint);
 
     if (!title || title.trim() === "") {
