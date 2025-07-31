@@ -168,7 +168,7 @@ function submitSuggestion() {
   
   fetch(API.suggest, {
     method: "POST",
-    mode: "no-cors",
+   
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, author, comment })
   }).then(() => {
