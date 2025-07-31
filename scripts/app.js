@@ -1,5 +1,6 @@
 import { logEvent, fetchBooksFromCSV, createTagElement, scrollIntoViewIfNeeded } from './utils.js';
 import { setupSearch } from './search.js';
+import { API } from "./config.js";
 
 let books = {};
 let titles = [];
@@ -159,7 +160,7 @@ function submitSuggestion() {
   const author = document.getElementById('suggAuthor').value.trim();
   const comment = document.getElementById('suggComment').value.trim();
 
-  fetch("https://script.google.com/macros/s/AKfycbwujPIzB1194lWMmUy8ah8ZHbZbRk04RtXMzCbVjIEFajFhCh0flZzePhWhoMTEdHk/exec", {
+  fetch(API.suggest, {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
