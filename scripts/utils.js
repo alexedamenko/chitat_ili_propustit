@@ -14,7 +14,6 @@ export function logEvent(eventName, details = {}) {
 
   fetch(API.log, {
     method: "POST",
-    mode: "no-cors",
     headers: {
       "Content-Type": "application/json"
     },
