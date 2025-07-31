@@ -16,7 +16,6 @@ export default async function handler(req, res) {
 
     const result = await fetch(endpoint, {
       method: "POST",
-      mode: "no-cors",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, author, comment })
     });
