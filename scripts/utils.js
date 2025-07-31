@@ -1,5 +1,4 @@
 import { API } from "./config.js";
-import Papa from "papaparse";
 
 export function logEvent(eventName, details = {}) {
   const tgUser = Telegram.WebApp.initDataUnsafe?.user || {};
