@@ -1,3 +1,6 @@
+import { API } from "./config.js";
+import Papa from "papaparse";
+
 export function logEvent(eventName, details = {}) {
   const tgUser = Telegram.WebApp.initDataUnsafe?.user || {};
   const payload = {
@@ -10,7 +13,7 @@ export function logEvent(eventName, details = {}) {
     ...details
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbzq_Va-WBbmoJkonJZ1YrKBjuFAq23GFaXUSKqjprbfNuQbyGsLFAuadSvM0nhYqirH/exec", {
+  fetch(API.log, {
     method: "POST",
     mode: "no-cors",
     headers: {
@@ -21,8 +24,7 @@ export function logEvent(eventName, details = {}) {
 }
 
 export async function fetchBooksFromCSV() {
-  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSEp6R70z91P1ozfFuZCodTdpXIooVSMnt2ODxSkJ1xJszYVr5VQ2_yV8eUvWmrOxr5-P6Seoryx7K2/pub?gid=0&single=true&output=csv";
-  const response = await fetch(CSV_URL);
+  const response = await fetch(API.books);
   const text = await response.text();
 
   const results = Papa.parse(text, { header: true }).data;
