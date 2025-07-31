@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Название обязательно" });
     }
 
-    const endpoint = process.env.SUGGEST_ENDPOINT;
+    const endpoint = "https://script.google.com/macros/s/AKfycbw2FEy4ytJ2ImqlKSUskMiPytVmnXggkJGDFKdHkygFuGy2ctCar5cBGXbGKQwfM_4/exec";
 
     const result = await fetch(endpoint, {
       method: "POST",
