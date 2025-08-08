@@ -1,6 +1,5 @@
 export default async function handler(req, res) {
   const url = process.env.CSV_URL;
-
   try {
     const response = await fetch(url);
     const text = await response.text();
